@@ -1,8 +1,16 @@
 <template>
-  <div class="circle">
+  <div
+    class="circle"
+    :class="{
+      'circle--work': isWorking,
+      'circle--play': isPlaying,
+      'circle--sm': size !== 'lg'
+    }"
+    @click="onClick"
+  >
     <div class="circle-bg" ref="bg">
-      <md-icon class="md-size-4x" v-if="isPlaying">play_circle_filled</md-icon>
-      <md-icon class="md-size-4x" v-if="!isPlaying">
+      <md-icon class="md-size-4x" v-if="!isPlaying">play_circle_filled</md-icon>
+      <md-icon class="md-size-4x" v-if="isPlaying">
         pause_circle_filled
       </md-icon>
     </div>
@@ -24,17 +32,11 @@
 </template>
 
 <script>
+import { TOGGLE_IS_PLAYING } from '@/stores/constants/mutation-types';
+
 export default {
   name: 'clock',
   props: {
-    isWorking: {
-      type: Boolean,
-      default: true
-    },
-    isPlaying: {
-      type: Boolean,
-      default: false
-    },
     value: {
       type: Number,
       default: 0
@@ -46,6 +48,10 @@ export default {
     stroke: {
       type: Number,
       default: 10
+    },
+    size: {
+      type: String,
+      default: 'lg'
     }
   },
   computed: {
@@ -56,7 +62,7 @@ export default {
       return (this.circleDiameter - this.stroke) / 2;
     },
     circleStrokeWidth() {
-      return this.stroke + 'px';
+      return parseInt(this.stroke) + 1 + 'px';
     },
     circleCircumference() {
       return 2 * Math.PI * this.circleRadius;
@@ -66,6 +72,12 @@ export default {
     },
     circleStrokeDashOffset() {
       return (this.circleCircumference * (100 - this.value)) / 100 + 'px';
+    },
+    isWorking() {
+      return this.$store.state.main.isWorking;
+    },
+    isPlaying() {
+      return this.$store.state.main.isPlaying;
     }
   },
   watch: {
@@ -107,6 +119,9 @@ export default {
       const size = `${this.circleDiameter - this.stroke * 2}px`;
       bg.style.width = size;
       bg.style.height = size;
+    },
+    onClick() {
+      this.$store.commit(TOGGLE_IS_PLAYING);
     }
   },
   mounted() {
@@ -119,30 +134,31 @@ export default {
 
 <style lang="scss" scoped>
 .circle {
+  color: $blue;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 3px solid $red;
+  border: 3px solid currentColor;
 
   &-bg {
     position: absolute;
     background: $white;
     border-radius: 50%;
-    border: 3px solid $red;
+    border: 3px solid currentColor;
     display: flex;
     justify-content: center;
     align-items: center;
 
     .md-icon {
       position: relative;
-      color: $red;
+      color: currentColor;
 
       &::after {
         position: absolute;
         content: ' ';
-        background: $red;
+        background: currentColor;
         width: 12px;
         height: 12px;
         bottom: 10px;
@@ -152,6 +168,7 @@ export default {
   }
 
   &-svg {
+    z-index: -1;
     overflow: visible;
     transform: scale(1) rotate(-90deg);
     transform-origin: center;
@@ -160,11 +177,56 @@ export default {
 
     &-circle {
       fill: none;
-      stroke: $red;
+      stroke: currentColor;
       transform-origin: center;
       transition: stroke-dashoffset 0.25s;
       will-change: stroke-dashoffset, stroke-dasharray, stroke-width,
         animation-name, r;
+    }
+  }
+
+  &--work {
+    color: $red;
+  }
+
+  &--play {
+    .circle {
+      &-bg {
+        background: currentColor;
+
+        .md-icon {
+          color: $white;
+        }
+      }
+    }
+  }
+
+  &--sm {
+    .circle {
+      &-bg {
+        border: 3px solid currentColor;
+
+        .md-icon {
+          width: 90px;
+          min-width: 90px;
+          height: 90px;
+          font-size: 90px !important;
+          border-radius: 50%;
+          border: 8px solid currentColor;
+
+          &::after {
+            content: none;
+          }
+        }
+      }
+    }
+
+    &.circle--play {
+      .circle {
+        &-bg {
+          border: 3px solid $white;
+        }
+      }
     }
   }
 }

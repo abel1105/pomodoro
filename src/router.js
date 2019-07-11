@@ -1,6 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import Panel from './views/Panel';
+import TodoPanel from '@/views/panels/TodoPanel';
+import ReportPanel from '@/views/panels/ReportPanel';
+import AlarmPanel from '@/views/panels/AlarmPanel';
 
 Vue.use(Router);
 
@@ -10,6 +14,28 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/panel',
+      name: 'panel',
+      component: Panel,
+      children: [
+        {
+          path: 'todo',
+          name: 'todo',
+          component: TodoPanel
+        },
+        {
+          path: 'report',
+          name: 'report',
+          component: ReportPanel
+        },
+        {
+          path: 'alarm',
+          name: 'alarm',
+          component: AlarmPanel
+        }
+      ]
     }
     // {
     //   path: '/about',

@@ -1,17 +1,20 @@
 <template>
-  <div class="home">
-    <div class="home-left"></div>
-    <div class="home-right">
-      <div class="home-right-nav">
-        <div class="home-right-nav-icon">
-          <md-icon>list</md-icon>
-          <md-icon>insert_chart</md-icon>
-          <md-icon>library_music</md-icon>
+  <div class="home" :class="{ 'home--work': isWorking }">
+    <div class="home-left">
+      <div class="home-left-wrapper">
+        <TodoInput />
+        <div class="home-left-timer">
+          <FirstTodo />
+          <Timer />
         </div>
-        <aside>
-          <h5>POMODORO</h5>
-        </aside>
+        <div class="home-left-list">
+          <TodoList />
+          <span>MORE</span>
+        </div>
       </div>
+    </div>
+    <div class="home-right">
+      <NavBar />
       <div class="home-right-clock">
         <Clock :value="60" :diameter="540" />
       </div>
@@ -20,16 +23,33 @@
 </template>
 
 <script>
-// @ is an alias to /src
-
 import Clock from '@/components/Clock';
+import TodoInput from '@/components/TodoInput';
+import FirstTodo from '@/components/FirstTodo';
+import Timer from '@/components/Timer';
+import TodoList from '@/components/TodoList';
+import NavBar from '@/components/NavBar';
+
 export default {
   name: 'home',
   components: {
-    Clock
+    NavBar,
+    FirstTodo,
+    TodoInput,
+    Clock,
+    Timer,
+    TodoList
   },
   data() {
     return {};
+  },
+  computed: {
+    isWorking() {
+      return this.$store.state.main.isWorking;
+    },
+    isPlaying() {
+      return this.$store.state.main.isPlaying;
+    }
   }
 };
 </script>
@@ -39,61 +59,60 @@ export default {
   display: flex;
 
   &-left {
-    width: calc(100% - 450px);
+    width: calc(445px + 80px + 50vw - 262.5px);
     height: 100vh;
-    background: $pink;
+    background: $light_blue;
+
+    &-wrapper {
+      margin-left: 80px;
+      width: 445px;
+      height: 100vh;
+      padding: 48px 0;
+    }
+
+    &-timer {
+      margin: 145px 0 110px;
+    }
+
+    &-list {
+      span {
+        cursor: pointer;
+        float: right;
+        font-weight: bold;
+        color: $blue;
+      }
+    }
   }
+
   &-right {
     position: relative;
-    width: 450px;
+    width: calc(50vw - 262.5px);
     height: 100vh;
     background: $dark_blue;
 
     &-nav {
       position: absolute;
       right: 85px;
-      width: 36px;
-      height: 100vh;
-      color: $white;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 45px 0;
-
-      &-icon {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        .md-icon {
-          width: 36px;
-          min-width: 36px;
-          height: 36px;
-          font-size: 36px !important;
-          margin: 0 0 48px;
-        }
-      }
-      aside {
-        font-family: Futura, sans-serif;
-        position: relative;
-        height: 100%;
-
-        h5 {
-          position: absolute;
-          bottom: 0;
-          right: 28px;
-          font-size: 24px;
-          transform-origin: right bottom;
-          transform: rotate(90deg);
-          margin: 0;
-        }
-      }
     }
 
     &-clock {
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
+    }
+  }
+
+  &--work {
+    .home {
+      &-left {
+        background: $pink;
+
+        &-list {
+          span {
+            color: $red;
+          }
+        }
+      }
     }
   }
 }

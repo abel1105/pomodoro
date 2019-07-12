@@ -1,7 +1,7 @@
 <template>
   <div class="panelClock" :class="{ 'panelClock--work': isWorking }">
     <div class="panelClock-clock">
-      <Clock size="sm" :value="60" :diameter="110" :stroke="5" />
+      <Clock size="sm" :value="percentage" :diameter="110" :stroke="5" />
     </div>
     <router-link :to="{ name: 'home' }">
       <div class="panelClock-content">
@@ -21,6 +21,12 @@ export default {
   computed: {
     isWorking() {
       return this.$store.state.main.isWorking;
+    },
+    countDown() {
+      return this.$store.state.main.countDown;
+    },
+    percentage() {
+      return (this.countDown / this.$store.state.main.total) * 100;
     }
   }
 };

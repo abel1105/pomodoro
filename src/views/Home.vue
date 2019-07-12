@@ -16,7 +16,7 @@
     <div class="home-right">
       <NavBar />
       <div class="home-right-clock">
-        <Clock :value="60" :diameter="540" />
+        <Clock :value="percentage" :diameter="540" />
       </div>
     </div>
   </div>
@@ -49,6 +49,12 @@ export default {
     },
     isPlaying() {
       return this.$store.state.main.isPlaying;
+    },
+    countDown() {
+      return this.$store.state.main.countDown;
+    },
+    percentage() {
+      return (this.countDown / this.$store.state.main.total) * 100;
     }
   }
 };

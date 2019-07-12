@@ -9,9 +9,8 @@
     @click="onClick"
   >
     <div class="circle-bg" ref="bg">
-      <md-icon class="md-size-4x" v-if="!isPlaying">play_circle_filled</md-icon>
-      <md-icon class="md-size-4x" v-if="isPlaying">
-        pause_circle_filled
+      <md-icon class="md-size-4x">
+        {{ isPlaying ? 'pause_circle_filled' : 'play_circle_filled' }}
       </md-icon>
     </div>
     <svg
@@ -32,7 +31,7 @@
 </template>
 
 <script>
-import { TOGGLE_IS_PLAYING } from '@/stores/constants/mutation-types';
+import { PLAY_OR_STOP } from '@/stores/constants/actions';
 
 export default {
   name: 'clock',
@@ -121,7 +120,7 @@ export default {
       bg.style.height = size;
     },
     onClick() {
-      this.$store.commit(TOGGLE_IS_PLAYING);
+      this.$store.dispatch(PLAY_OR_STOP);
     }
   },
   mounted() {
@@ -144,16 +143,16 @@ export default {
 
   &-bg {
     position: absolute;
-    background: $white;
     border-radius: 50%;
     border: 3px solid currentColor;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: currentColor;
 
     .md-icon {
       position: relative;
-      color: currentColor;
+      color: $white;
 
       &::after {
         position: absolute;
@@ -192,10 +191,10 @@ export default {
   &--play {
     .circle {
       &-bg {
-        background: currentColor;
+        background: $white;
 
         .md-icon {
-          color: $white;
+          color: currentColor;
         }
       }
     }
@@ -204,7 +203,9 @@ export default {
   &--sm {
     .circle {
       &-bg {
-        border: 3px solid currentColor;
+        border: 3px solid $white;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: currentColor;
 
         .md-icon {
           width: 90px;
@@ -213,6 +214,7 @@ export default {
           font-size: 90px !important;
           border-radius: 50%;
           border: 8px solid currentColor;
+          color: $white;
 
           &::after {
             content: none;
@@ -224,7 +226,12 @@ export default {
     &.circle--play {
       .circle {
         &-bg {
-          border: 3px solid $white;
+          background: $white;
+          border: 3px solid currentColor;
+
+          .md-icon {
+            color: currentColor;
+          }
         }
       }
     }

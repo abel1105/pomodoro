@@ -1,5 +1,10 @@
 <template>
-  <div class="panel-container musicPanel">
+  <div
+    class="panel-container musicPanel"
+    :class="{
+      'musicPanel--work': isWorking
+    }"
+  >
     <div class="panel-container-title">WORK</div>
     <div class="musicPanel-grid">
       <md-radio v-model="workRing" value="none">NONE</md-radio>
@@ -66,6 +71,9 @@ export default {
         playAudio(alarm);
         return this.$store.commit(SET_BREAK_ALARM, alarm);
       }
+    },
+    isWorking() {
+      return this.$store.state.main.isWorking;
     }
   }
 };
@@ -94,10 +102,24 @@ export default {
 
     &.md-checked {
       .md-radio-container {
-        border-color: $red;
+        border-color: $blue;
 
         &:after {
-          background: $red;
+          background: $blue;
+        }
+      }
+    }
+  }
+
+  &--work {
+    .md-radio {
+      &.md-checked {
+        .md-radio-container {
+          border-color: $red;
+
+          &:after {
+            background: $red;
+          }
         }
       }
     }

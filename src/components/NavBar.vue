@@ -1,5 +1,5 @@
 <template>
-  <div class="navBar">
+  <div class="navBar" :class="{ 'navBar--work': isWorking }">
     <div class="navBar-icon">
       <router-link :to="{ name: 'todo' }" v-if="!isPanel">
         <md-icon>list</md-icon>
@@ -13,6 +13,13 @@
       <router-link :to="{ name: 'home' }" v-if="isPanel">
         <md-icon>clear</md-icon>
       </router-link>
+      <div
+        class="navBar-icon-debug"
+        :class="{ 'navBar-icon-debug--active': isDebug }"
+        @click="toggleDebug"
+      >
+        <md-icon>bug_report</md-icon>
+      </div>
     </div>
     <aside>
       <router-link :to="{ name: 'home' }">
@@ -24,11 +31,23 @@
 
 <script>
 import _ from 'lodash';
+import { TOGGLE_IS_DEBUG } from '@/stores/constants/mutation-types';
 export default {
   name: 'NavBar',
   computed: {
     isPanel() {
       return _.some(this.$route.matched, { name: 'panel' });
+    },
+    isDebug() {
+      return this.$store.state.main.isDebug;
+    },
+    isWorking() {
+      return this.$store.state.main.isWorking;
+    }
+  },
+  methods: {
+    toggleDebug() {
+      this.$store.commit(TOGGLE_IS_DEBUG);
     }
   }
 };
@@ -53,12 +72,18 @@ export default {
 
     a {
       margin: 0 0 48px;
+    }
 
-      .md-icon {
-        width: 36px;
-        min-width: 36px;
-        height: 36px;
-        font-size: 36px !important;
+    .md-icon {
+      width: 36px;
+      min-width: 36px;
+      height: 36px;
+      font-size: 36px !important;
+    }
+
+    &-debug {
+      &--active {
+        color: $blue;
       }
     }
   }
@@ -75,6 +100,14 @@ export default {
       transform-origin: right bottom;
       transform: rotate(90deg);
       margin: 0;
+    }
+  }
+
+  &--work {
+    .navBar-icon-debug {
+      &--active {
+        color: $red;
+      }
     }
   }
 }

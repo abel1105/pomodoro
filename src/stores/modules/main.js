@@ -21,6 +21,14 @@ const main = {
     work: 5, // 25 * 60,
     break: 5 // 5 * 60
   },
+  getters: {
+    undonePercentage(state) {
+      return (state.countDown / state.total) * 100;
+    },
+    donePercentage(state) {
+      return ((state.total - state.countDown) / state.total) * 100;
+    }
+  },
   mutations: {
     [SET_TIME](state, time) {
       state.total = time;

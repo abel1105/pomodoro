@@ -6,7 +6,9 @@
     <router-link :to="{ name: 'home' }">
       <div class="panelClock-content">
         <Timer size="sm" />
-        <h5>THE FIRST THING TO DO TODAY</h5>
+        <h5 :class="{ '--placeholder': !todo }">
+          {{ todo ? todo.title : 'Please add your mission' }}
+        </h5>
       </div>
     </router-link>
   </div>
@@ -27,6 +29,9 @@ export default {
     },
     percentage() {
       return (this.countDown / this.$store.state.main.total) * 100;
+    },
+    todo() {
+      return this.$store.getters.current;
     }
   }
 };
@@ -71,6 +76,10 @@ export default {
       text-overflow: ellipsis;
       white-space: nowrap;
       max-width: 250px;
+
+      &.--placeholder {
+        opacity: 0.5;
+      }
     }
   }
 

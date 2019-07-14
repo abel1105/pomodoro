@@ -1,23 +1,43 @@
 <template>
   <div class="todoInput" :class="{ 'todoInput--work': isWorking }">
     <input
+      v-model="title"
       class="todoInput-input"
       type="text"
       placeholder="ADD A NEW MISSION..."
+      v-on:keyup.enter="submit"
     />
-    <md-icon class="todoInput-add">add</md-icon>
+    <div @click="submit">
+      <md-icon class="todoInput-add">add</md-icon>
+    </div>
   </div>
 </template>
 
 <script>
+import { ADD_NEW_TODO } from '@/stores/constants/mutation-types';
+
 export default {
   name: 'TodoInput',
+  data() {
+    return {
+      title: ''
+    };
+  },
   computed: {
     isWorking() {
       return this.$store.state.main.isWorking;
     },
     isPlaying() {
       return this.$store.state.main.isPlaying;
+    }
+  },
+  methods: {
+    submit() {
+      const trimTitle = this.title.trim();
+      if (trimTitle) {
+        this.$store.commit(ADD_NEW_TODO, trimTitle);
+        this.title = '';
+      }
     }
   }
 };

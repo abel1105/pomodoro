@@ -38,11 +38,12 @@ export default {
     range() {
       const arr = [];
       let remain = this.value;
-      for (let i = 0; remain > 100; i++) {
-        arr[i] = 100;
-        remain -= 100;
+      for (let i = 0; i < remain; i++) {
+        arr.push(100);
       }
-      arr.push(remain);
+      if (this.isWorking) {
+        arr.push(this.percentage);
+      }
       return arr;
     },
     current() {
@@ -50,6 +51,9 @@ export default {
     },
     isWorking() {
       return this.$store.state.main.isWorking;
+    },
+    percentage() {
+      return this.$store.getters.donePercentage;
     }
   },
   methods: {

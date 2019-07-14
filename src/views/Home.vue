@@ -8,8 +8,10 @@
           <Timer />
         </div>
         <div class="home-left-list">
-          <TodoList />
-          <span>MORE</span>
+          <TodoList :todo-list="todoList" />
+          <router-link :to="{ name: 'todo' }" v-if="todoList.length === 3">
+            <span>MORE</span>
+          </router-link>
         </div>
       </div>
     </div>
@@ -25,7 +27,7 @@
 <script>
 import Clock from '@/components/Clock';
 import TodoInput from '@/components/TodoInput';
-import FirstTodo from '@/components/FirstTodo';
+import FirstTodo from '@/components/ActiveTodo';
 import Timer from '@/components/Timer';
 import TodoList from '@/components/TodoList';
 import NavBar from '@/components/NavBar';
@@ -50,11 +52,11 @@ export default {
     isPlaying() {
       return this.$store.state.main.isPlaying;
     },
-    countDown() {
-      return this.$store.state.main.countDown;
-    },
     percentage() {
-      return (this.countDown / this.$store.state.main.total) * 100;
+      return this.$store.getters.undonePercentage;
+    },
+    todoList() {
+      return this.$store.getters.threeUndoList;
     }
   }
 };

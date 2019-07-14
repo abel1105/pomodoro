@@ -4,6 +4,7 @@
     <PanelNavBar />
     <PanelClock />
     <router-view></router-view>
+    <copyright />
   </div>
 </template>
 
@@ -11,9 +12,10 @@
 import NavBar from '@/components/NavBar';
 import PanelNavBar from '@/components/panels/PanelNavBar';
 import PanelClock from '@/components/panels/PanelClock';
+import Copyright from '@/components/Copyright';
 export default {
   name: 'Panel',
-  components: { PanelClock, PanelNavBar, NavBar }
+  components: { PanelClock, PanelNavBar, NavBar, Copyright }
 };
 </script>
 <style lang="scss" scoped>

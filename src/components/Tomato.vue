@@ -41,7 +41,7 @@ export default {
       for (let i = 0; i < remain; i++) {
         arr.push(100);
       }
-      if (this.isWorking) {
+      if (this.isWorking && !this.isDone) {
         arr.push(this.percentage);
       }
       return arr;

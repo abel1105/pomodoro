@@ -59,7 +59,7 @@ export default {
         return this.$store.state.alarm.work;
       },
       set: function(alarm) {
-        playAudio(alarm);
+        if (alarm !== 'none') playAudio(alarm);
         return this.$store.commit(SET_WORK_ALARM, alarm);
       }
     },
@@ -68,7 +68,7 @@ export default {
         return this.$store.state.alarm.break;
       },
       set: function(alarm) {
-        playAudio(alarm);
+        if (alarm !== 'none') playAudio(alarm);
         return this.$store.commit(SET_BREAK_ALARM, alarm);
       }
     },
@@ -93,6 +93,9 @@ export default {
 
 <style lang="scss">
 .musicPanel {
+  height: calc(100vh - 200px);
+  overflow: auto;
+
   .md-radio {
     color: #fff;
 

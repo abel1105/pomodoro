@@ -1,6 +1,7 @@
 import {
   SET_TIME,
   TICK_TOCK,
+  TOGGLE_IS_DEBUG,
   TOGGLE_IS_PLAYING,
   TOGGLE_IS_WORKING
 } from '@/stores/constants/mutation-types';
@@ -14,12 +15,13 @@ import { startClock, stopClock } from '@/helper/clock';
 
 const main = {
   state: {
-    total: 5 * 1, // minutes
-    countDown: 5 * 1, // minutes
+    total: 25 * 60, // minutes
+    countDown: 25 * 60, // minutes
     isWorking: true, // countdown minutes 25 or 5
     isPlaying: false, // time start or stop
-    work: 5, // 25 * 60,
-    break: 5 // 5 * 60
+    isDebug: false,
+    work: 25 * 60,
+    break: 5 * 60
   },
   getters: {
     undonePercentage(state) {
@@ -39,6 +41,23 @@ const main = {
     },
     [TOGGLE_IS_WORKING](state) {
       state.isWorking = !state.isWorking;
+    },
+    [TOGGLE_IS_DEBUG](state) {
+      state.isDebug = !state.isDebug;
+      if (state.isDebug) {
+        state.work = 5;
+        state.break = 5;
+        state.total = 5;
+        state.countDown = 5;
+      } else {
+        state.work = 25 * 60;
+        state.break = 5 * 60;
+        state.total = 25 * 60;
+        state.countDown = 25 * 60;
+      }
+      state.isWorking = true;
+      state.isPlaying = false;
+      stopClock();
     },
     [TICK_TOCK](state) {
       if (state.countDown !== 0) {

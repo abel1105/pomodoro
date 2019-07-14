@@ -1,16 +1,20 @@
+import _ from 'lodash';
 import { ADD_TOMATO_ON_REPORT } from '@/stores/constants/actions';
 import {
   ADD_TOMATO_ON_HISTORY,
   ADD_TOMATO_ON_TODAY,
   ADD_TOMATO_ON_WEEK
 } from '@/stores/constants/mutation-types';
-import { getWeekHistory } from '@/helper/report';
+import { mergeHistoryWithLocalStorage } from '@/helper/report';
+import { LOCAL_STORAGE_KEY, setLocalStorage } from '@/helper/localStorage';
+
+const history = mergeHistoryWithLocalStorage();
 
 const report = {
   state: {
-    today: 0,
-    week: 0,
-    history: getWeekHistory()
+    today: history[history.length - 1].y,
+    week: _.sumBy(history, 'y'),
+    history
   },
   mutations: {
     [ADD_TOMATO_ON_TODAY](state) {
@@ -29,6 +33,7 @@ const report = {
         }
         return item;
       });
+      setLocalStorage(LOCAL_STORAGE_KEY.HISTORY_REPORT, state.history);
     }
   },
   actions: {

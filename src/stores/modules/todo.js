@@ -3,10 +3,16 @@ import {
   ACTIVE_TODO,
   ADD_NEW_TODO,
   ADD_TOMATO,
+  CLEAN_DONE_TODO,
   TODDLE_TODO_DONE
 } from '@/stores/constants/mutation-types';
 import { generateId } from '@/helper/todo';
 import { ADD_TOMATO_ON_CURRENT } from '@/stores/constants/actions';
+import {
+  getLocalStorage,
+  LOCAL_STORAGE_KEY,
+  setLocalStorage
+} from '@/helper/localStorage';
 
 const isDone = state => {
   return state.todoList.filter(item => item.isDone);
@@ -16,18 +22,31 @@ const isUndone = state => {
   return state.todoList.filter(item => !item.isDone);
 };
 
+const initialState = () => {
+  const todoList = getLocalStorage(LOCAL_STORAGE_KEY.TODO_LIST) || [
+    {
+      id: 'zsdfgt',
+      title: 'The F2E week 1',
+      isDone: false,
+      tomato: 3
+    }
+  ];
+
+  let currentId = getLocalStorage(LOCAL_STORAGE_KEY.CURRENT_TODO) || 'zsdfgt';
+
+  let current = _.find(todoList, { id: currentId });
+
+  if (!current || current.isDone) {
+    currentId = null;
+  }
+  return {
+    currentId,
+    todoList
+  };
+};
+
 const todo = {
-  state: {
-    currentId: 'zsdfgt',
-    todoList: [
-      {
-        id: 'zsdfgt',
-        title: 'The F2E week 1',
-        isDone: false,
-        tomato: 3
-      }
-    ]
-  },
+  state: initialState(),
   getters: {
     threeUndoList(state, getters) {
       return getters.undoneList
@@ -52,6 +71,12 @@ const todo = {
         tomato: 0,
         title
       });
+      if (!state.currentId) {
+        console.log(state.todoList);
+        state.currentId = isUndone(state)[0] ? isUndone(state)[0].id : null;
+        setLocalStorage(LOCAL_STORAGE_KEY.CURRENT_TODO, state.currentId);
+      }
+      setLocalStorage(LOCAL_STORAGE_KEY.TODO_LIST, state.todoList);
     },
     [TODDLE_TODO_DONE](state, id) {
       state.todoList = state.todoList.map(item => {
@@ -65,10 +90,13 @@ const todo = {
       });
       if (id === state.currentId || !state.currentId) {
         state.currentId = isUndone(state)[0] ? isUndone(state)[0].id : null;
+        setLocalStorage(LOCAL_STORAGE_KEY.CURRENT_TODO, state.currentId);
       }
+      setLocalStorage(LOCAL_STORAGE_KEY.TODO_LIST, state.todoList);
     },
     [ACTIVE_TODO](state, id) {
       state.currentId = id;
+      setLocalStorage(LOCAL_STORAGE_KEY.CURRENT_TODO, state.currentId);
     },
     [ADD_TOMATO](state) {
       state.todoList = state.todoList.map(item => {
@@ -80,6 +108,11 @@ const todo = {
         }
         return item;
       });
+      setLocalStorage(LOCAL_STORAGE_KEY.TODO_LIST, state.todoList);
+    },
+    [CLEAN_DONE_TODO](state) {
+      state.todoList = state.todoList.filter(item => !item.isDone);
+      setLocalStorage(LOCAL_STORAGE_KEY.TODO_LIST, state.todoList);
     }
   },
   actions: {

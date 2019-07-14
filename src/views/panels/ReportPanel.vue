@@ -56,6 +56,9 @@ export default {
 
 <style lang="scss" scoped>
 .reportPanel {
+  height: calc(100vh - 200px);
+  overflow: auto;
+
   &-number {
     display: flex;
 

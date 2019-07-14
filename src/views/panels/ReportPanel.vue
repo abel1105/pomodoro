@@ -2,13 +2,13 @@
   <div class="panel-container reportPanel">
     <div class="panel-container-title">FOCUS TIME</div>
     <div class="reportPanel-number">
-      <ReportNumber name="TODAY" />
-      <ReportNumber name="WEEK" />
+      <ReportNumber name="TODAY" :number="today" />
+      <ReportNumber name="WEEK" :number="week" />
     </div>
 
     <div class="panel-container-title">CHART</div>
     <div class="reportPanel-chart">
-      <report-chart :height="300" />
+      <report-chart :height="300" :chart-data="chartData" />
     </div>
   </div>
 </template>
@@ -18,7 +18,39 @@ import ReportNumber from '@/components/reports/ReportNumber';
 import ReportChart from '@/components/reports/ReportChart';
 export default {
   name: 'ReportPanel',
-  components: { ReportChart, ReportNumber }
+  components: { ReportChart, ReportNumber },
+  computed: {
+    today() {
+      return this.$store.state.report.today;
+    },
+    week() {
+      return this.$store.state.report.week;
+    },
+    chartData() {
+      return {
+        datasets: [
+          {
+            data: this.data,
+            backgroundColor: [
+              '#fff',
+              '#fff',
+              '#fff',
+              '#fff',
+              '#fff',
+              '#fff',
+              this.isWorking ? '#FF4384' : '#00A7FF'
+            ]
+          }
+        ]
+      };
+    },
+    data() {
+      return this.$store.state.report.history;
+    },
+    isWorking() {
+      return this.$store.state.main.isWorking;
+    }
+  }
 };
 </script>
 

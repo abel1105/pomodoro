@@ -1,6 +1,7 @@
 import { TICK_TOCK } from '@/stores/constants/mutation-types';
 import {
   ADD_TOMATO_ON_CURRENT,
+  ADD_TOMATO_ON_REPORT,
   FINISH_COUNT_DOWN
 } from '@/stores/constants/actions';
 
@@ -22,6 +23,7 @@ export const startClock = (commit, dispatch, state) => {
       console.log(isWorking, state.isWorking);
       if (isWorking) {
         dispatch(ADD_TOMATO_ON_CURRENT);
+        dispatch(ADD_TOMATO_ON_REPORT);
       }
       return false;
     }

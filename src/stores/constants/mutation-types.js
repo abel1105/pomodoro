@@ -10,3 +10,7 @@ export const ADD_NEW_TODO = 'todo/addNewTodo';
 export const TODDLE_TODO_DONE = 'todo/toggleTodoDone';
 export const ACTIVE_TODO = 'todo/activeTodo';
 export const ADD_TOMATO = 'todo/addTomato';
+
+export const ADD_TOMATO_ON_TODAY = 'report/addTomatoOnToday';
+export const ADD_TOMATO_ON_WEEK = 'report/addTomatoOnWeek';
+export const ADD_TOMATO_ON_HISTORY = 'report/addTomatoOnHistory';

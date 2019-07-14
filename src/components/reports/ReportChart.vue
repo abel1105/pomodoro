@@ -1,5 +1,6 @@
 <script>
-import { Bar } from 'vue-chartjs';
+import { Bar, mixins } from 'vue-chartjs';
+const { reactiveProp } = mixins;
 
 const option = {
   responsive: true,
@@ -52,6 +53,7 @@ const option = {
           fontStyle: 'bold',
           padding: 16,
           maxTicksLimit: 7,
+          stepSize: 1,
           beginAtZero: true,
           callback: value => {
             if (value !== 0) return value;
@@ -70,29 +72,14 @@ const option = {
 export default {
   name: 'ReportChart',
   extends: Bar,
-  data() {
-    return {
-      data: {
-        datasets: [
-          {
-            data: [
-              { x: '2019-07-01', y: 20 },
-              { x: '2019-07-02', y: 10 },
-              { x: '2019-07-03', y: 14 },
-              { x: '2019-07-04', y: 15 },
-              { x: '2019-07-05', y: 16 },
-              { x: '2019-07-06', y: 17 },
-              { x: '2019-07-07', y: 17 }
-            ],
-            backgroundColor: ['#fff', '#fff', '#FF4384']
-          }
-        ]
-      },
-      option
-    };
+  mixins: [reactiveProp],
+  computed: {
+    chartOption() {
+      return option;
+    }
   },
   mounted() {
-    this.renderChart(this.data, this.option);
+    this.renderChart(this.chartData, this.chartOption);
   }
 };
 </script>

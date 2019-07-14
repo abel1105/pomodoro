@@ -16,10 +16,10 @@
       </div>
     </div>
     <div class="home-right">
-      <NavBar />
       <div class="home-right-clock">
         <Clock :value="percentage" :diameter="540" />
       </div>
+      <NavBar />
     </div>
   </div>
 </template>

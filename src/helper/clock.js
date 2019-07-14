@@ -2,7 +2,9 @@ import { TICK_TOCK } from '@/stores/constants/mutation-types';
 import {
   ADD_TOMATO_ON_CURRENT,
   ADD_TOMATO_ON_REPORT,
-  FINISH_COUNT_DOWN
+  FINISH_COUNT_DOWN,
+  PLAY_BREAK_ALARM,
+  PLAY_WOKR_ALARM
 } from '@/stores/constants/actions';
 
 let interval = null;
@@ -24,6 +26,9 @@ export const startClock = (commit, dispatch, state) => {
       if (isWorking) {
         dispatch(ADD_TOMATO_ON_CURRENT);
         dispatch(ADD_TOMATO_ON_REPORT);
+        dispatch(PLAY_WOKR_ALARM);
+      } else {
+        dispatch(PLAY_BREAK_ALARM);
       }
       return false;
     }

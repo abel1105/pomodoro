@@ -59,6 +59,10 @@ export default {
   height: calc(100vh - 200px);
   overflow: auto;
 
+  @media (max-width: 992px) {
+    height: calc(100vh - 100px);
+  }
+
   &-number {
     display: flex;
 

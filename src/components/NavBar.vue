@@ -1,22 +1,46 @@
 <template>
   <div class="navBar" :class="{ 'navBar--work': isWorking }">
     <div class="navBar-icon">
-      <router-link :to="{ name: 'todo' }" v-if="!isPanel">
+      <router-link
+        :to="{ name: 'home' }"
+        active-class="navBar-icon--active"
+        v-if="isMobile"
+      >
+        <md-icon>home</md-icon>
+      </router-link>
+      <router-link
+        :to="{ name: 'todo' }"
+        active-class="navBar-icon--active"
+        v-if="!isPanel || isMobile"
+      >
         <md-icon>list</md-icon>
       </router-link>
-      <router-link :to="{ name: 'report' }" v-if="!isPanel">
+      <router-link
+        :to="{ name: 'report' }"
+        active-class="navBar-icon--active"
+        v-if="!isPanel || isMobile"
+      >
         <md-icon>insert_chart</md-icon>
       </router-link>
-      <router-link :to="{ name: 'alarm' }" v-if="!isPanel">
+      <router-link
+        :to="{ name: 'alarm' }"
+        active-class="navBar-icon--active"
+        v-if="!isPanel || isMobile"
+      >
         <md-icon>library_music</md-icon>
       </router-link>
-      <router-link :to="{ name: 'home' }" v-if="isPanel">
+      <router-link
+        :to="{ name: 'home' }"
+        active-class="navBar-icon--active"
+        v-if="isPanel && !isMobile"
+      >
         <md-icon>clear</md-icon>
       </router-link>
       <div
         class="navBar-icon-debug"
-        :class="{ 'navBar-icon-debug--active': isDebug }"
+        :class="{ 'navBar-icon--active': isDebug }"
         @click="toggleDebug"
+        v-if="!isPanel || isMobile"
       >
         <md-icon>bug_report</md-icon>
       </div>
@@ -43,6 +67,9 @@ export default {
     },
     isWorking() {
       return this.$store.state.main.isWorking;
+    },
+    isMobile() {
+      return this.$store.getters.isMobileScreen;
     }
   },
   methods: {
@@ -65,6 +92,14 @@ export default {
   justify-content: space-between;
   padding: 48px 0;
 
+  @media (max-width: 1024px) {
+    right: 30px;
+  }
+
+  @media (max-width: 992px) {
+    position: absolute;
+  }
+
   &-icon {
     display: flex;
     flex-direction: column;
@@ -81,10 +116,8 @@ export default {
       font-size: 36px !important;
     }
 
-    &-debug {
-      &--active {
-        color: $blue;
-      }
+    &--active {
+      color: $blue;
     }
   }
   aside {
@@ -104,7 +137,7 @@ export default {
   }
 
   &--work {
-    .navBar-icon-debug {
+    .navBar-icon {
       &--active {
         color: $red;
       }

@@ -5,8 +5,22 @@
 </template>
 
 <script>
+import _ from 'lodash';
+import { SET_SCREEN_SIZE } from '@/stores/constants/mutation-types';
+
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    window.addEventListener('resize', _.debounce(this.setSize, 200));
+  },
+  methods: {
+    setSize() {
+      this.$store.commit(SET_SCREEN_SIZE, {
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }
+  }
 };
 </script>
 

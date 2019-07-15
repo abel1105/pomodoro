@@ -4,7 +4,8 @@
     :class="{
       'circle--work': isWorking,
       'circle--play': isPlaying,
-      'circle--sm': size !== 'lg'
+      'circle--md': size === 'md',
+      'circle--sm': size === 'sm'
     }"
     @click="onClick"
   >
@@ -232,6 +233,21 @@ export default {
           .md-icon {
             color: currentColor;
           }
+        }
+      }
+    }
+  }
+
+  &--md {
+    .circle-bg {
+      .md-icon {
+        width: 50px;
+        min-width: 50px;
+        height: 50px;
+        font-size: 50px !important;
+
+        &::after {
+          content: none;
         }
       }
     }

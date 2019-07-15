@@ -87,6 +87,11 @@ export default {
     grid-template-rows: repeat(5, 36.4px);
     font-weight: bold;
     font-size: 16px;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(8, 36.4px);
+    }
   }
 }
 </style>
@@ -95,6 +100,10 @@ export default {
 .musicPanel {
   height: calc(100vh - 200px);
   overflow: auto;
+
+  @media (max-width: 992px) {
+    height: calc(100vh - 180px);
+  }
 
   .md-radio {
     color: #fff;

@@ -41,6 +41,10 @@ export default {
     margin-top: 48px;
     padding-bottom: 100px;
 
+    @media (max-width: 992px) {
+      height: calc(100vh - 200px);
+    }
+
     .panel-container-title:first-child {
       margin-top: 0;
     }

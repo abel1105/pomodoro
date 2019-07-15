@@ -16,3 +16,6 @@ export const CLEAN_DONE_TODO = 'todo/cleanDoneTodo';
 export const ADD_TOMATO_ON_TODAY = 'report/addTomatoOnToday';
 export const ADD_TOMATO_ON_WEEK = 'report/addTomatoOnWeek';
 export const ADD_TOMATO_ON_HISTORY = 'report/addTomatoOnHistory';
+
+export const SET_SCREEN_SIZE = 'screen/setScreenSize';
+export const TOGGLE_SHOW_MENU = 'screen/toggleShowMenu';
